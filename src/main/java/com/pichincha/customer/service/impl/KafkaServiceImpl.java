@@ -1,4 +1,4 @@
-package com.pichincha.customer.service;
+package com.pichincha.customer.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
