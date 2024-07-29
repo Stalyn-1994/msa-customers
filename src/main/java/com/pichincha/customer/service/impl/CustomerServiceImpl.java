@@ -27,6 +27,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -39,8 +40,9 @@ public class CustomerServiceImpl implements CustomerService {
 
   final CustomerServiceMapper customerServiceMapper;
   final CustomerRepository customerRepository;
-  final ObjectMapper objectMapper;
   final KafkaServiceImpl kafkaService;
+  final ObjectMapper objectMapper;
+  final Environment environment;
 
   @Override
   @Transactional
@@ -72,7 +74,8 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
   private void isCustomerUpdateState(CustomerRequestUpdateDto customerDto) {
-    if (Boolean.FALSE.equals(customerDto.getState())) {
+    if (Boolean.FALSE.equals(customerDto.getState())&&
+        environment.getRequiredProperty("queu.enabled",Boolean.class)) {
       try {
         kafkaService.send("example", objectMapper.writeValueAsString(
             CustomerRequestLegacyDto.builder().identification(customerDto.getCustomerId())

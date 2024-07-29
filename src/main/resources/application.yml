@@ -7,6 +7,7 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: none
+
   datasource:
     url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
     driver-class-name: org.h2.Driver
@@ -24,6 +25,7 @@ spring:
 
 kafka:
   topic: example
-
+queu:
+  enabled: false
 cipher:
   key: a1B2c3D4e5F6g7H8
