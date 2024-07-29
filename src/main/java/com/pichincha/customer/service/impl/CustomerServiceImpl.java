@@ -33,7 +33,6 @@ import org.springframework.stereotype.Service;
 
 @Log4j2
 @Service
-@Transactional
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CustomerServiceImpl implements CustomerService {
@@ -44,6 +43,7 @@ public class CustomerServiceImpl implements CustomerService {
   final KafkaServiceImpl kafkaService;
 
   @Override
+  @Transactional
   public ResponseEntity<BaseResponseDto> save(CustomerRequestDto customerDto) {
     Optional<CustomerEntity> customerEntity = customerRepository.findCustomerEntitiesByIdentification(
         customerDto.getIdentification());
@@ -58,6 +58,7 @@ public class CustomerServiceImpl implements CustomerService {
   }
 
   @Override
+  @Transactional
   public ResponseEntity<BaseResponseDto> update(CustomerRequestUpdateDto customerDto) {
     CustomerEntity customerEntity = customerRepository.findCustomerEntitiesByClientId(
         customerDto.getCustomerId()).orElseThrow(() -> new NotFoundException(NOT_FOUND));
@@ -105,6 +106,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<BaseResponseDto> delete (String customerId){
       CustomerEntity customerEntity = customerRepository.findCustomerEntitiesByClientId(
           customerId).orElseThrow(() -> new NotFoundException(NOT_FOUND));
